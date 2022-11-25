@@ -10,6 +10,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { FaAirbnb, FaMoon, FaSun } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
 
@@ -45,9 +46,11 @@ const Header = () => {
       justifyContent={"space-between"}
       alignItems={"center"}
     >
-      <Box color={logoColor}>
-        <FaAirbnb size={"38"} />
-      </Box>
+      <Link to={"/"}>
+        <Box color={logoColor}>
+          <FaAirbnb size={"38"} />
+        </Box>
+      </Link>
       <HStack spacing={"2"}>
         <IconButton
           onClick={toggleColorMode}

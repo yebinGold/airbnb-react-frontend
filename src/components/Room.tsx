@@ -24,7 +24,7 @@ const Room = ({ imageUrl, name, rating, city, country, price }: IRoomProps) => {
   return (
     <VStack alignItems={"flex-start"} spacing={1}>
       <Box position="relative" rounded="2xl" mb={2} overflow="hidden">
-        <Image minH="280" src={imageUrl} />
+        <Image w={360} minH="280" src={imageUrl} />
         <Button
           variant={"unstyled"}
           position="absolute"
@@ -35,12 +35,12 @@ const Room = ({ imageUrl, name, rating, city, country, price }: IRoomProps) => {
           <FaRegHeart size={20} />
         </Button>
       </Box>
-      <Box>
-        <Grid gap={2} templateColumns={"4fr 1fr"}>
+      <Box w="100%">
+        <Grid gap={2} templateColumns={"6fr 1fr"}>
           <Text noOfLines={1} fontSize={"md"} as="b">
             {name}
           </Text>
-          <HStack spacing={1}>
+          <HStack spacing={1} alignItems={"center"}>
             <FaStar size={15} />
             <Text>{rating}</Text>
           </HStack>

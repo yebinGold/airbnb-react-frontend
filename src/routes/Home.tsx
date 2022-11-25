@@ -1,5 +1,6 @@
-import { Box, Grid, Skeleton, SkeletonText } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 import Room from "../components/Room";
+import RoomSkeleton from "../components/RoomSkeleton";
 
 const Home = () => {
   return (
@@ -19,10 +20,7 @@ const Home = () => {
         "2xl": "repeat(5, 1fr)",
       }}
     >
-      <Box>
-        <Skeleton h={280} rounded="2xl" mb={5} />
-        <SkeletonText w={"50%"} />
-      </Box>
+      <RoomSkeleton />
       <Room />
     </Grid>
   );

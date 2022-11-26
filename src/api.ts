@@ -15,3 +15,9 @@ export const fetchRoom = async ({ queryKey }: QueryFunctionContext) => {
   const res = await instance.get(`rooms/${roomPk}`);
   return res.data;
 };
+
+export const fetchRoomReviews = async ({ queryKey }: QueryFunctionContext) => {
+  const [_, roomPk] = queryKey;
+  const res = await instance.get(`rooms/${roomPk}/reviews`);
+  return res.data;
+};

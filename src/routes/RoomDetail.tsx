@@ -2,10 +2,12 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchRoom } from "../api";
-import { IRoomDetail } from "./../types.d";
+import { IRoomDetail, IReview } from "./../types.d";
 import {
   Avatar,
   Box,
+  Container,
+  Divider,
   Grid,
   GridItem,
   Heading,
@@ -16,12 +18,17 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
+import { fetchRoomReviews } from "./../api";
 
 const RoomDetail = () => {
   const { roomPk } = useParams();
   const { isLoading, data } = useQuery<IRoomDetail>(
     ["room", roomPk],
     fetchRoom
+  );
+  const { isLoading: reviewsLoading, data: reviewsData } = useQuery<IReview[]>(
+    ["room", roomPk, "reviews"],
+    fetchRoomReviews
   );
   return (
     <Box
@@ -34,14 +41,20 @@ const RoomDetail = () => {
       <Skeleton w={"50%"} h={45} isLoaded={!isLoading}>
         <Heading>{data?.name}</Heading>
       </Skeleton>
-      <HStack mt={2}>
-        <FaStar size={10} />
-        <Text as="b">{data?.rating}</Text>
-        <Text>•</Text>
-        <Text>
-          {data?.address}, {data?.city}, {data?.country}
-        </Text>
-      </HStack>
+      <Skeleton w={"60%"} isLoaded={!isLoading}>
+        <HStack mt={2}>
+          <FaStar size={10} />
+          <Text as="b">{data?.rating}</Text>
+          <Text>•</Text>
+          <Text>
+            {reviewsData?.length} review{reviewsData?.length !== 1 ? "s" : null}
+          </Text>
+          <Text>•</Text>
+          <Text>
+            {data?.address}, {data?.city}, {data?.country}
+          </Text>
+        </HStack>
+      </Skeleton>
       <Grid
         mt={8}
         height="60vh"
@@ -68,7 +81,7 @@ const RoomDetail = () => {
           </GridItem>
         ))}
       </Grid>
-      <HStack mt={8} w="40%" justifyContent={"space-between"}>
+      <HStack mt={8} w="50%" justifyContent={"space-between"}>
         <VStack alignItems="flex-start">
           <Skeleton isLoaded={!isLoading}>
             <Text fontSize={"xl"} as="b">
@@ -93,6 +106,44 @@ const RoomDetail = () => {
           src={data?.owner.profile_photo}
         />
       </HStack>
+      <Divider mt={6} />
+      <Box mt={8}>
+        <Skeleton w={"30%"} isLoaded={!isLoading}>
+          <Heading mb={5} fontSize={"xl"}>
+            <HStack>
+              <FaStar size={15} />
+              <Text>{data?.rating}</Text>
+              <Text>•</Text>
+              <Text>
+                {reviewsData?.length} review
+                {reviewsData?.length !== 1 ? "s" : null}
+              </Text>
+            </HStack>
+          </Heading>
+        </Skeleton>
+        <Container maxW="container.lg" mt={6} marginX="none">
+          <Grid gap={10} templateColumns={"1fr 1fr"}>
+            {reviewsData?.map((review, index) => (
+              <VStack key={index} alignItems={"flex-start"}>
+                <HStack spacing={3}>
+                  <Avatar
+                    name={review.user.name}
+                    size={"md"}
+                    src={review.user.profile_photo}
+                  />
+                  <VStack alignItems={"flex-start"} spacing={0}>
+                    <Heading fontSize={"md"}>{review.user.username}</Heading>
+                    <HStack spacing={1}>
+                      <FaStar size={10} /> <Text>{review.rating}</Text>
+                    </HStack>
+                  </VStack>
+                </HStack>
+                <Text>{review.payload}</Text>
+              </VStack>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
     </Box>
   );
 };

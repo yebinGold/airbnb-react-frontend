@@ -61,6 +61,7 @@ const Home = () => {
             room.photos[0]?.file ||
             "https://a0.muscache.com/im/pictures/miso/Hosting-717134404264905813/original/dfe9fd1e-a010-43c9-b546-0bbc7d59f7f3.jpeg?im_w=720"
           }
+          pk={room.pk}
           name={room.name}
           rating={room.rating}
           city={room.city}

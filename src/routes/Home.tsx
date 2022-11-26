@@ -4,26 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 import Room from "../components/Room";
 import RoomSkeleton from "../components/RoomSkeleton";
 import { fetchRooms } from "./../api";
-
-interface IPhoto {
-  pk: number;
-  file: string;
-  description: string;
-}
-
-interface IRoom {
-  pk: number;
-  name: string;
-  country: string;
-  city: string;
-  price: number;
-  rating: number;
-  is_owner: boolean;
-  photos: IPhoto[];
-}
+import { IRoomList } from "./../types";
 
 const Home = () => {
-  const { isLoading, data } = useQuery<IRoom[]>(["rooms"], fetchRooms);
+  const { isLoading, data } = useQuery<IRoomList[]>(["rooms"], fetchRooms);
 
   return (
     <Grid

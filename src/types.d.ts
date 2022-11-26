@@ -17,7 +17,7 @@ export interface IRoomList {
 
 export interface IRoomOwner {
   name: string;
-  avatar: string;
+  profile_photo: string;
   username: string;
 }
 

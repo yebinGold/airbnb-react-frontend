@@ -1,3 +1,4 @@
+import Cookie from "js-cookie";
 import { QueryFunctionContext } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -25,3 +26,12 @@ export const fetchRoomReviews = async ({ queryKey }: QueryFunctionContext) => {
 
 export const getMe = () =>
   instance.get(`users/me`).then((response) => response.data);
+
+export const logOut = () =>
+  instance
+    .post(`users/log-out`, null, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "", // django security 따라서 post 요청 헤더에 csrftoken 넘겨주기
+      },
+    })
+    .then((response) => response.data);

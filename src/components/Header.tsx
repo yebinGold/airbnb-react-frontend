@@ -5,16 +5,23 @@ import {
   HStack,
   IconButton,
   LightMode,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Stack,
   useColorMode,
   useColorModeValue,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { FaAirbnb, FaMoon, FaSun } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import LoginModal from "./LoginModal";
 import SignUpModal from "./SignUpModal";
 import useUser from "./../lib/useUser";
+import { logOut } from "./../api";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Header = () => {
   const { userLoading, user, isLoggedIn } = useUser();
@@ -32,6 +39,25 @@ const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const logoColor = useColorModeValue("red.500", "red.200");
   const Icon = useColorModeValue(FaMoon, FaSun);
+  const toast = useToast();
+  const queryClient = useQueryClient();
+
+  const onLogOut = async () => {
+    const toastId = toast({
+      title: "Loggin out...",
+      status: "loading",
+      duration: 9000,
+      isClosable: true,
+      position: "bottom-right",
+    });
+    await logOut();
+    queryClient.refetchQueries(["me"]); // me라는 이름의 query를 refetch
+    toast.update(toastId, {
+      status: "success",
+      title: "Good Bye!",
+      description: "You are logged out.",
+    });
+  };
 
   return (
     <Stack
@@ -72,11 +98,18 @@ const Header = () => {
               </LightMode>
             </>
           ) : (
-            <Avatar
-              name={user?.username}
-              size={"md"}
-              src={user?.profile_photo}
-            />
+            <Menu>
+              <MenuButton>
+                <Avatar
+                  name={user?.username}
+                  size={"md"}
+                  src={user?.profile_photo}
+                />
+              </MenuButton>
+              <MenuList>
+                <MenuItem onClick={onLogOut}>Log Out</MenuItem>
+              </MenuList>
+            </Menu>
           )
         ) : null}
       </HStack>

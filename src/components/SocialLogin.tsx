@@ -15,7 +15,13 @@ const SocialLogin = () => {
         <Divider />
       </HStack>
       <VStack>
-        <Button w="100%" leftIcon={<FaGithub />} colorScheme={"blackAlpha"}>
+        <Button
+          as={"a"}
+          href="http://github.com/login/oauth/authorize?client_id=dd7325ccd13b98e589f2&scope=read:user,user:email"
+          w="100%"
+          leftIcon={<FaGithub />}
+          colorScheme={"blackAlpha"}
+        >
           Continue with Github
         </Button>
         <Button w="100%" leftIcon={<FaComment />} colorScheme={"yellow"}>
